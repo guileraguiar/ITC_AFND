@@ -12,4 +12,4 @@ O formato das informações do AFND, cadeias de entrada e resultados são livres
 - [@davirafaellonghi (Davi Longhi)](https://github.com/davirafaellonghi)
 - [@FilipeJunks (Filipe Junks)](https://github.com/FilipeJunks)
 - [@guileraguiar (Guilherme Correa)](https://github.com/guileraguiar)
-- [@Matheus1404 (Matheus Tavares)](https://github.com/Matheus1404)
+- [@Tavares1404 (Matheus Tavares)](https://github.com/Matheus1404)
