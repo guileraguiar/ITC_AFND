@@ -66,7 +66,7 @@ public class Main {
 
         Scanner scanner = new Scanner(System.in);
 
-        System.out.print("AFND - Automato Finito Não Determinístico ");
+        System.out.print("AFND - Autômato Finito Não Determinístico ");
 
         System.out.print("\nDigite os estados separados por vírgula: ");
         String estadosInput = scanner.nextLine();
@@ -109,6 +109,10 @@ public class Main {
             String input = scanner.nextLine();
             if (input.equalsIgnoreCase("sair")) {
                 break;
+            }
+            if (!input.matches("[01]+")) {
+                System.out.println("Número inválido. Digite apenas 0s e 1s.");
+                continue;
             }
             String result = afnd.execute(input);
             System.out.println("Resultado: " + result);
