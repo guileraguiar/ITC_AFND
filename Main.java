@@ -5,6 +5,7 @@ public class Main {
     private Map<String, Map<String, Set<String>>> transicoes;
     private String estadoInicial;
     private Set<String> estadoFinal;
+    private Set<String> alfabeto;
 
     public Main(Set<String> estados, Set<String> alfabeto, Map<String, Map<String, Set<String>>> transicoes,
                 String estadoInicial, Set<String> estadoFinal) {
@@ -12,12 +13,17 @@ public class Main {
         this.transicoes = transicoes;
         this.estadoInicial = estadoInicial;
         this.estadoFinal = estadoFinal;
+        this.alfabeto = alfabeto;
     }
 
     public String execute(String input) {
+        if (!validarEntrada(input)) {
+            return "ENTRADA INVÁLIDA";
+        }
+
         Set<String> estadoAtual = new HashSet<>();
         estadoAtual.add(estadoInicial);
-        FechamentoEpsilon(estadoAtual);
+        fechamentoEpsilon(estadoAtual);
 
         for (char symbol : input.toCharArray()) {
             Set<String> proximoEstado = new HashSet<>();
@@ -26,7 +32,7 @@ public class Main {
                     proximoEstado.addAll(transicoes.get(estado).get(String.valueOf(symbol)));
                 }
             }
-            FechamentoEpsilon(proximoEstado);
+            fechamentoEpsilon(proximoEstado);
             estadoAtual = proximoEstado;
         }
 
@@ -39,7 +45,7 @@ public class Main {
         return "RECUSA";
     }
 
-    private void FechamentoEpsilon(Set<String> estados) {
+    private void fechamentoEpsilon(Set<String> estados) {
         Stack<String> stack = new Stack<>();
         stack.addAll(estados);
 
@@ -57,6 +63,16 @@ public class Main {
         }
     }
 
+    private boolean validarEntrada(String input) {
+        for (char symbol : input.toCharArray()) {
+            String symbolStr = String.valueOf(symbol);
+            if (!alfabeto.contains(symbolStr)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     public static void main(String[] args) {
         Map<String, Map<String, Set<String>>> transicoes = new HashMap<>();
         Set<String> estados = new HashSet<>();
@@ -66,20 +82,20 @@ public class Main {
 
         Scanner scanner = new Scanner(System.in);
 
-        System.out.print("AFND - Autômato Finito Não Determinístico ");
+        System.out.print("AFND - Autômato Finito Não Determinístico\n");
 
-        System.out.print("\nDigite os estados separados por vírgula: ");
+        System.out.print("Digite os estados separados por vírgula: ");
         String estadosInput = scanner.nextLine();
         estados.addAll(Arrays.asList(estadosInput.split(",")));
 
-        System.out.print("\nDigite o alfabeto separado por vírgula: ");
+        System.out.print("Digite o alfabeto separado por vírgula: ");
         String alfabetoInput = scanner.nextLine();
         alfabeto.addAll(Arrays.asList(alfabetoInput.split(",")));
 
-        System.out.print("\nDigite o estado inicial: ");
+        System.out.print("Digite o estado inicial: ");
         estadoInicial = scanner.nextLine();
 
-        System.out.print("\nDigite o estado final: ");
+        System.out.print("Digite o estado final: ");
         String estadoFinalInput = scanner.nextLine();
         estadoFinal.addAll(Arrays.asList(estadoFinalInput.split(",")));
 
@@ -105,14 +121,10 @@ public class Main {
         Main afnd = new Main(estados, alfabeto, transicoes, estadoInicial, estadoFinal);
 
         while (true) {
-            System.out.print("\nDigite uma cadeia de 0s e 1s (ou 'sair' para encerrar): ");
+            System.out.print("\nDigite uma cadeia de símbolos (ou 'sair' para encerrar): ");
             String input = scanner.nextLine();
             if (input.equalsIgnoreCase("sair")) {
                 break;
-            }
-            if (!input.matches("[01]+")) {
-                System.out.println("Número inválido. Digite apenas 0s e 1s.");
-                continue;
             }
             String result = afnd.execute(input);
             System.out.println("Resultado: " + result);
